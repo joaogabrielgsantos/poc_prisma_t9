@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model countries {
+  id    Int     @id(map: "countries_pk") @default(autoincrement())
+  name  String
+  films films[]
+}
+
+model filmGenres {
+  id      Int    @id(map: "filmGenres_pk") @default(autoincrement())
+  filmId  Int
+  genreId Int
+  films   films  @relation(fields: [filmId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "filmGenres_fk0")
+  genres  genres @relation(fields: [genreId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "filmGenres_fk1")
+}
+
+model films {
+  id         Int          @id(map: "films_pk") @default(autoincrement())
+  title      String       @unique
+  year       Int
+  countryId  Int
+  filmGenres filmGenres[]
+  countries  countries    @relation(fields: [countryId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "films_fk0")
+}
+
+model genres {
+  id         Int          @id(map: "genres_pk") @default(autoincrement())
+  name       String       @unique
+  filmGenres filmGenres[]
+}

@@ -1,7 +1,7 @@
 import joi from 'joi';
 
 
-const filmSchema = joi.object({
+export const filmSchema = joi.object({
     title:
         joi
             .string()
@@ -12,19 +12,16 @@ const filmSchema = joi.object({
             .integer()
             .min(1895)
             .required(),
-    country:
+    countryId:
         joi
-            .string()
+            .number()
+            .integer()
+            .min(1)
+            .max(34)
             .required(),
-    genre:
+    genresId:
         joi
-            .array().items(joi.string())
+            .array().items(joi.number().integer().max(13))
             .required(),
 
 });
-
-
-
-export default {
-    filmSchema,
-}

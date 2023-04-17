@@ -29,8 +29,31 @@ async function create({ title, year, countryId, genresId }: Film): Promise<FilmR
 }
 
 
+async function findMany() {
+    const listFilms = await prisma.films.findMany({
+
+        select: {
+            id:true,
+            title: true,
+            year: true,
+            countryId: false,
+            countries: true,
+            filmGenres: {
+                select: {
+                    genres: true
+                    
+                }
+            },
+
+        }
+    })
+    return listFilms
+
+}
+
 
 export default {
     create,
-    findFilmByTitle
+    findFilmByTitle,
+    findMany
 }

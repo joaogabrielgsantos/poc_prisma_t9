@@ -11,12 +11,27 @@ async function create(req: Request, res: Response, next: NextFunction) {
         return res.sendStatus(StatusCodes.CREATED)
 
     } catch (error) {
-        next (error)
+        next(error)
     }
-    
-
 }
 
+async function findMany(req: Request, res: Response, next: NextFunction) {
+
+    try {
+        const filmList = await filmServices.findMany()
+        return res.status(StatusCodes.OK).send(filmList)
+
+    } catch (error) {
+        next(error)
+    }
+    
+}
+
+
+
+
+
 export default {
-    create
+    create,
+    findMany
 }

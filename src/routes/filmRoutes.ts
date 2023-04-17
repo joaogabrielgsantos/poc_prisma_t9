@@ -9,6 +9,7 @@ const filmRoutes = Router()
 filmRoutes
     .get("/status", (req: Request, res: Response) => res.send("OK!"))
     .post("/", validateSchema(filmSchema), filmControllers.create)
+    .get("/", filmControllers.findMany )
 
 
 

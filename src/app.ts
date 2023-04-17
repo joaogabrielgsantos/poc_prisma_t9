@@ -1,6 +1,8 @@
+import "express-async-errors"
 import express from "express";
 import cors from "cors";
 import routes from "./routes/index.js";
+import { handleApplicationErrors } from "./middlewares/errorMiddleware.js";
 
 
 
@@ -10,6 +12,7 @@ app
     .use(express.json())
     .use(cors())
     .use(routes)
+    .use(handleApplicationErrors)
 
 
 

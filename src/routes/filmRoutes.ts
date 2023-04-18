@@ -10,6 +10,8 @@ filmRoutes
     .get("/status", (req: Request, res: Response) => res.send("OK!"))
     .post("/", validateSchema(filmSchema), filmControllers.create)
     .get("/", filmControllers.findMany )
+    .delete("/:filmId", filmControllers.exclude)
+    .put("/:filmId", filmControllers.update)
 
 
 

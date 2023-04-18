@@ -24,14 +24,43 @@ async function findMany(req: Request, res: Response, next: NextFunction) {
     } catch (error) {
         next(error)
     }
-    
+
 }
 
+async function exclude(req: Request, res: Response, next: NextFunction) {
+    const {filmId} = req.params as Record<string, string>
+    const id = Number(filmId)
+    
 
+    try {
+        await filmServices.exclude(id)
+        return res.sendStatus(StatusCodes.OK)
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+async function update(req: Request, res: Response, next: NextFunction) {
+    const {filmId} = req.params as Record<string, string>
+    const id = Number(filmId)
+    const updateFilm = req.body as Film
+    
+
+    try {
+        await filmServices.update(updateFilm, id)
+        return res.sendStatus(StatusCodes.OK)
+
+    } catch (error) {
+        next(error)
+    }
+}
 
 
 
 export default {
     create,
-    findMany
+    findMany,
+    exclude,
+    update
 }

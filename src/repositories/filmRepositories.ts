@@ -33,7 +33,7 @@ async function findMany() {
     const listFilms = await prisma.films.findMany({
 
         select: {
-            id:true,
+            id: true,
             title: true,
             year: true,
             countryId: false,
@@ -41,7 +41,7 @@ async function findMany() {
             filmGenres: {
                 select: {
                     genres: true
-                    
+
                 }
             },
 
@@ -52,8 +52,59 @@ async function findMany() {
 }
 
 
+async function findFilmById(filmId: number) {
+    const film = await prisma.films.findUnique({
+        where: {
+            id: filmId
+        }
+    })
+    return film
+
+}
+
+async function excludeFilm(id: number) {
+    await prisma.filmGenres.deleteMany({
+        where: {
+            filmId: id
+        }
+    })
+
+    await prisma.films.delete({
+        where: {
+            id: id
+        }
+    })
+
+}
+
+async function updateFilm({ title, year, countryId, genresId }: Film) {
+    const updatedFilm = await prisma.films.update({
+        where: {
+            title: title,
+        },
+        data: {
+            year: year,
+            countryId: countryId,
+            filmGenres: {
+                deleteMany: {},
+                create: genresId.map((genreId) => ({
+                    genreId: genreId,
+                })),
+            },
+        },
+    });
+
+    return updatedFilm;
+
+}
+
+
+
 export default {
     create,
     findFilmByTitle,
-    findMany
+    findMany,
+    findFilmById,
+    excludeFilm,
+    updateFilm
 }
